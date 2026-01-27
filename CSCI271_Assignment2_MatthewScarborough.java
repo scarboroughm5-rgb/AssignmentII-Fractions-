@@ -150,7 +150,7 @@ public class CSCI271_Assignment2_MatthewScarborough {
             return new CSCI271_Assignment2_MatthewScarborough((this.Numerator > 0 && other.Numerator > 0) || (this.Numerator < 0 && other.Numerator < 0) ? 1 : -1, 0);
         }
 
-        long newNum = this.Numerator * other.Denominator + other.Numerator * this.Denominator;
+        long newNum = this.Numerator * other.Numerator;
         long newDen = this.Denominator * other.Denominator;
         return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
     }
@@ -247,10 +247,40 @@ public class CSCI271_Assignment2_MatthewScarborough {
         testing("(2/3)^-1", c.pow(-1).toString(), "3/2");
         testing("(2/3)^0", c.pow(0).toString(), "1");
 
-        system
+        System.out.println("\n the complex Example from assignment");
+        CSCI271_Assignment2_MatthewScarborough sixteen = new CSCI271_Assignment2_MatthewScarborough(16);
+        CSCI271_Assignment2_MatthewScarborough threeFifths = new CSCI271_Assignment2_MatthewScarborough(3, 5);
+        CSCI271_Assignment2_MatthewScarborough seven = new CSCI271_Assignment2_MatthewScarborough(7);
+        CSCI271_Assignment2_MatthewScarborough sixSevenths = new CSCI271_Assignment2_MatthewScarborough(6, 7);
 
+        CSCI271_Assignment2_MatthewScarborough denominator = threeFifths.add(seven);
+        CSCI271_Assignment2_MatthewScarborough divison = sixteen.divide(denominator);
+        CSCI271_Assignment2_MatthewScarborough result = divison.multiply(sixSevenths);
+        testing("16/(3/5 +7) * 6/7", result.toString(), "240/133");
 
+        System.out.println("\n Test 3: Operations with Infinity and NaN");
 
+        CSCI271_Assignment2_MatthewScarborough inf = new CSCI271_Assignment2_MatthewScarborough(1, 0);
+        CSCI271_Assignment2_MatthewScarborough negInf = new CSCI271_Assignment2_MatthewScarborough(-1, 0);
+        CSCI271_Assignment2_MatthewScarborough nan = new CSCI271_Assignment2_MatthewScarborough(0, 0);
+        CSCI271_Assignment2_MatthewScarborough zero = new CSCI271_Assignment2_MatthewScarborough(0, 1);
+        CSCI271_Assignment2_MatthewScarborough one = new CSCI271_Assignment2_MatthewScarborough(1, 1);
+
+        testing("Infinity + Infinity", inf.add(inf).toString(), "Infinity");
+        testing("Infinity - Infinity", inf.subtract(inf).toString(), "NaN");
+        testing("Infinity * 0", inf.multiply(zero).toString(), "NaN");
+        testing("Infinity / 1", inf.divide(one).toString(), "Infinity");
+        testing("NaN + 1", nan.add(one).toString(), "NaN");
+        testing("NaN - Infinity", nan.subtract(inf).toString(), "NaN");
+        testing("NaN * 0", nan.multiply(zero).toString(), "NaN");
+        testing("NaN / -Infinity", nan.divide(negInf).toString(), "NaN");
+        testing("Infinity ^ 2", inf.pow(2).toString(), "Infinity");
+        testing("Infinity ^ -1", inf.pow(-1).toString(), "0");
+        testing("0 ^ 0", zero.pow(0).toString(), "NaN");
+        testing("negate(Infinity)", inf.negate().toString(), "-Infinity");
+        testing("negate(NaN)", nan.negate().toString(), "NaN");
+
+        System.out.println("All tests completed.");
     }
 
     private static void testing(String description, String actual, String expected){
