@@ -1,9 +1,40 @@
+/* Assignment 2 for csci 271-001 Spring 2026
 
+Auther: Matthew Scarboroughm
+OS:  Window 11 Home edition 
+Compiler: javac 25.0.1
+Date: January  22, 2025
 
+Purpose
+The purpose of this program is to calculate the final numerical grade based on the grading scheme that was published in the course syllbus. 
+
+I declare and confirm the following:
+
+-I have not discussed this program code with anyone other than my instructor or teaching assistant assigned to these course. 
+-I have not used prgramming code obtained from someone else, or any unautherised sources, including the internet, either modified or unmodified. 
+-If any source code or documentation used in my program was obtained from other sources, like a text book, or course notes, i have clearly indicated that with a  proper citation in the comments of my program. 
+-I have not designed this program in such a way to defeat or interfere with the normal operations of the supplied grading code. 
+
+Matthew Scarborough
+*/
 public class CSCI271_Assignment2_MatthewScarborough {
         private long Numerator; 
         private long Denominator;
 
+        /************************Constructor (Num, Den)***********************
+         * Description: This function initializes a Fraction object with a numerator and denominator
+         *
+         * Parameters: Num (numerator), Den (denominator)
+         *
+         * pre: None
+         *
+         * post: Fraction object is initialized with normalized values
+         *
+         * Returns: Fraction object
+         *
+         * Called by: main
+         * Calls: normalize
+         ***********************************************************************/
         public CSCI271_Assignment2_MatthewScarborough(long Num, long Den){
             // handles special cases
             
@@ -27,12 +58,39 @@ public class CSCI271_Assignment2_MatthewScarborough {
             this.Denominator = Den;
             normalize();
         }
-        // constructor for whole numbers
+        /************************Constructor (Num)***********************
+         * Description: This function initializes a Fraction object with a whole number
+         *
+         * Parameters: Num (whole number)
+         *
+         * pre: None
+         *
+         * post: Fraction object is initialized with denominator of 1
+         *
+         * Returns: Fraction object
+         *
+         * Called by: main
+         * Calls: None
+         ***********************************************************************/
         public CSCI271_Assignment2_MatthewScarborough(long Num){
             this.Numerator = Num;
             this.Denominator = 1;
         }
 
+    /************************GCD***********************
+     * Description: This function calculates the greatest common divisor of two numbers
+     *
+     * Parameters: a, b (two long values)
+     *
+     * pre: None
+     *
+     * post: GCD is calculated using Euclidean algorithm
+     *
+     * Returns: The greatest common divisor
+     *
+     * Called by: normalize
+     * Calls: None
+     ***********************************************************************/
     private static long gcd(long a, long b){
 
         a = Math.abs(a);
@@ -57,6 +115,20 @@ public class CSCI271_Assignment2_MatthewScarborough {
         return a;
     }
     
+    /************************Normalize***********************
+     * Description: This function normalizes a fraction by reducing it to lowest terms and ensuring positive denominator
+     *
+     * Parameters: None
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: Fraction is in normalized form with positive denominator and no common factors
+     *
+     * Returns: None
+     *
+     * Called by: Constructor
+     * Calls: gcd
+     ***********************************************************************/
     private void normalize(){
 
         if(this.Denominator == 0){
@@ -79,14 +151,56 @@ public class CSCI271_Assignment2_MatthewScarborough {
         }
     }
 
+    /************************isNan***********************
+     * Description: This function checks if the fraction represents NaN (0/0)
+     *
+     * Parameters: None
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: Boolean value is returned
+     *
+     * Returns: true if fraction is NaN, false otherwise
+     *
+     * Called by: All arithmetic methods
+     * Calls: None
+     ***********************************************************************/
     public boolean isNan(){
         return (this.Numerator == 0 && this.Denominator == 0);
     }
 
+    /************************isInfinite***********************
+     * Description: This function checks if the fraction represents infinity
+     *
+     * Parameters: None
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: Boolean value is returned
+     *
+     * Returns: true if fraction is infinity, false otherwise
+     *
+     * Called by: All arithmetic methods
+     * Calls: None
+     ***********************************************************************/
     public boolean isInfinite(){
         return (this.Denominator == 0 && this.Numerator != 0);
     }
 
+    /************************toString***********************
+     * Description: This function converts the fraction to its string representation
+     *
+     * Parameters: None
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: String representation is created
+     *
+     * Returns: String representation of the fraction
+     *
+     * Called by: main, testing
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     @Override
     public String toString(){
         // check for NaN
@@ -106,6 +220,20 @@ public class CSCI271_Assignment2_MatthewScarborough {
         return this.Numerator + "/" + this.Denominator;
     } 
 
+    /************************add***********************
+     * Description: This function adds two fractions together
+     *
+     * Parameters: other (another Fraction object)
+     *
+     * pre: Both fraction objects must be initialized
+     *
+     * post: The sum of two fractions is calculated
+     *
+     * Returns: A new Fraction object representing the sum
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough add(CSCI271_Assignment2_MatthewScarborough other){
         if(this.isNan() || other.isNan()) return new CSCI271_Assignment2_MatthewScarborough(0,0);
         if(this.isInfinite() && other.isInfinite()){
@@ -123,6 +251,20 @@ public class CSCI271_Assignment2_MatthewScarborough {
 
     }
 
+    /************************subtract***********************
+     * Description: This function subtracts one fraction from another
+     *
+     * Parameters: other (another Fraction object)
+     *
+     * pre: Both fraction objects must be initialized
+     *
+     * post: The difference of two fractions is calculated
+     *
+     * Returns: A new Fraction object representing the difference
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough subtract(CSCI271_Assignment2_MatthewScarborough other){
         if(this.isNan() || other.isNan()) return new CSCI271_Assignment2_MatthewScarborough(0,0);
         if(this.isInfinite() && other.isInfinite()){
@@ -139,6 +281,20 @@ public class CSCI271_Assignment2_MatthewScarborough {
         return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
     }
 
+    /************************multiply***********************
+     * Description: This function multiplies two fractions together
+     *
+     * Parameters: other (another Fraction object)
+     *
+     * pre: Both fraction objects must be initialized
+     *
+     * post: The product of two fractions is calculated
+     *
+     * Returns: A new Fraction object representing the product
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough multiply(CSCI271_Assignment2_MatthewScarborough other){
         if(this.isNan() || other.isNan()) return new CSCI271_Assignment2_MatthewScarborough(0,0);
         if(this.isInfinite()){
@@ -155,6 +311,20 @@ public class CSCI271_Assignment2_MatthewScarborough {
         return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
     }
 
+    /************************divide***********************
+     * Description: This function divides one fraction by another
+     *
+     * Parameters: other (another Fraction object)
+     *
+     * pre: Both fraction objects must be initialized and divisor must not be zero
+     *
+     * post: The quotient of two fractions is calculated
+     *
+     * Returns: A new Fraction object representing the quotient
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough divide(CSCI271_Assignment2_MatthewScarborough other){
         if(this.isNan() || other.isNan() || (other.Numerator == 0 && other.Denominator != 0)) return new CSCI271_Assignment2_MatthewScarborough(0,0);
         if(other.isInfinite()){
@@ -173,12 +343,40 @@ public class CSCI271_Assignment2_MatthewScarborough {
         return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
     }
 
+    /************************negate***********************
+     * Description: This function negates the fraction (multiplies by -1)
+     *
+     * Parameters: None
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: The negated fraction is calculated
+     *
+     * Returns: A new Fraction object with opposite sign
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough negate(){
         if(this.isNan()) return new CSCI271_Assignment2_MatthewScarborough(0, 0);
         if(this.isInfinite()) return new CSCI271_Assignment2_MatthewScarborough(-this.Numerator, 0);
         return new CSCI271_Assignment2_MatthewScarborough(-this.Numerator, this.Denominator);
     }
 
+    /************************pow***********************
+     * Description: This function raises a fraction to a given integer power
+     *
+     * Parameters: exponent (an integer)
+     *
+     * pre: Fraction object must be initialized
+     *
+     * post: The fraction raised to the power is calculated
+     *
+     * Returns: A new Fraction object representing the result
+     *
+     * Called by: main
+     * Calls: isNan, isInfinite
+     ***********************************************************************/
     public CSCI271_Assignment2_MatthewScarborough pow(int exponent){
         if(this.isNan()) return new CSCI271_Assignment2_MatthewScarborough(0,0);
         if(this.isInfinite()){
