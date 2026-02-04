@@ -36,26 +36,25 @@ public class CSCI271_Assignment2_MatthewScarborough {
          * Calls: normalize
          ***********************************************************************/
         public CSCI271_Assignment2_MatthewScarborough(long Num, long Den){
-            // handles special cases
             
             // case 1: both numerator and denominator are 0
             if(Num == 0 && Den == 0){
-                this.Numerator = 0;
-                this.Denominator = 0;
+                this.Numerator = 0; // sets the Numerator variable to 0 
+                this.Denominator = 0; // sets the denominator to 0 
                 return;
             }
 
             // case 2: denominator is 0
             if (Den == 0){
                 // store signs for positive and negative infinity
-                this.Numerator = (Num > 0) ? 1 : -1;
-                this.Denominator = 0;
+                this.Numerator = (Num > 0) ? 1 : -1; 
+                this.Denominator = 0; // sets denominator to 0 
                 return;
             }
 
             // normal case 
-            this.Numerator = Num;
-            this.Denominator = Den;
+            this.Numerator = Num; // sets numerator to num 
+            this.Denominator = Den; // sets denominator to den 
             normalize();
         }
         /************************Constructor (Num)***********************
@@ -93,26 +92,26 @@ public class CSCI271_Assignment2_MatthewScarborough {
      ***********************************************************************/
     private static long gcd(long a, long b){
 
-        a = Math.abs(a);
-        b = Math.abs(b);
+        a = Math.abs(a); // absolute value of a
+        b = Math.abs(b); // absolute value of b 
         
         if (a == 0 && b == 0){
-            return 1;
+            return 1; // return 0
         }
 
         if (a == 0){
-            return b;
+            return b; // returns the denominator 
         }
 
         if(b == 0){
-            return a;
+            return a; // returns the numerator 
         }
         while (b != 0){
-            long temp = b;
-            b = a % b;
-            a = temp;
+            long temp = b; // temp value to store b
+            b = a % b; // sets b to the modulos of a 
+            a = temp; // a equals to temp 
         }
-        return a;
+        return a; // returns a 
     }
     
     /************************Normalize***********************
@@ -131,21 +130,23 @@ public class CSCI271_Assignment2_MatthewScarborough {
      ***********************************************************************/
     private void normalize(){
 
+        // if the denominator is 0 then it returns 
         if(this.Denominator == 0){
             return;
         }
-
+        // if the denominator is less this zero, this will see if it numerator and denominator need to be negative
         if(this.Denominator < 0){
             this.Numerator = -this.Numerator;
             this.Denominator = -this.Denominator;
         }
 
         long divisor = gcd(this.Numerator, this.Denominator);
+        // if the divisro is not zero the Numerator and denominator will continue to be divided
         if(divisor != 0){
             this.Numerator /= divisor;
             this.Denominator /= divisor;
         }
-
+        // if numerator is equals to 0 and denominator does not denominator equals 1
         if(this.Numerator == 0 && this.Denominator != 0){
             this.Denominator = 1;
         }
@@ -154,7 +155,7 @@ public class CSCI271_Assignment2_MatthewScarborough {
     /************************isNan***********************
      * Description: This function checks if the fraction represents NaN (0/0)
      *
-     * Parameters: None
+     * Parameters: Nonen
      *
      * pre: Fraction object must be initialized
      *
@@ -389,17 +390,19 @@ public class CSCI271_Assignment2_MatthewScarborough {
             if (this.Numerator == 0) return new CSCI271_Assignment2_MatthewScarborough(0, 0);
             return new CSCI271_Assignment2_MatthewScarborough(1,1);
         }
-        
-        if(exponent < 0){
-            exponent = -exponent;
-            long newNum = (long) Math.pow(this.Denominator, exponent);
-            long newDen = (long) Math.pow(this.Numerator, exponent);
-            return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
-        }
+        long Newnum = this.Numerator;
+        long Newden = this.Denominator;
 
-        long newNum = (long) Math.pow(this.Numerator, exponent);
-        long newDen = (long) Math.pow(this.Denominator, exponent);
-        return new CSCI271_Assignment2_MatthewScarborough(newNum, newDen);
+        for (int i = 1; i < Math.abs(exponent); i ++){
+            Newnum *= this.Numerator;
+            Newden *= this.Denominator;
+        }
+        if (exponent < 0){
+            long temp = Newnum;
+            Newnum = Newden;
+            Newden = temp;
+        }
+        return new CSCI271_Assignment2_MatthewScarborough(Newnum, Newden);
     }
 
     static public void main(String[] args){
@@ -455,6 +458,16 @@ public class CSCI271_Assignment2_MatthewScarborough {
         CSCI271_Assignment2_MatthewScarborough divison = sixteen.divide(denominator);
         CSCI271_Assignment2_MatthewScarborough result = divison.multiply(sixSevenths);
         testing("16/(3/5 +7) * 6/7", result.toString(), "240/133");
+
+        System.out.println("\n test 2 part 2: more intesne testing with arithmetic operations");
+        CSCI271_Assignment2_MatthewScarborough F9 = new CSCI271_Assignment2_MatthewScarborough(4, 9);
+        CSCI271_Assignment2_MatthewScarborough F10 = new CSCI271_Assignment2_MatthewScarborough(2, 3);
+        testing("4/9 + 2/3",  F9.add(F10).toString(), "14/9");
+        testing("4/9 - 1/3", F9.subtract(F10).toString(), "-2/9");
+        testing("4/9 * 2/3", F9.multiply(F10).toString(), "8/27");
+        testing("4/9 / 2/3", F9.divide(F10).toString(), "2/3");
+        CSCI271_Assignment2_MatthewScarborough F11 = new CSCI271_Assignment2_MatthewScarborough(4, 5);
+        testing("pow(4/5, 30)", F11.pow(3).toString(), "64/125");
 
         System.out.println("\n Test 3: Operations with Infinity and NaN");
 
